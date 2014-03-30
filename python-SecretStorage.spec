@@ -30,8 +30,8 @@ BuildRequires:  python-sphinx
 # Emulate the X environment.
 BuildRequires:  xorg-x11-server-Xvfb
 # Tests only.
-BuildRequires:  gnome-keyring
-BuildRequires:  python-crypto
+# BuildRequires:  gnome-keyring
+# BuildRequires:  python-crypto
 Requires:       dbus-python
 
 %description
@@ -100,12 +100,12 @@ popd
 find %{_builddir} -name '.buildinfo' -delete
 
 %check
-pushd tests
-PYTHONPATH=%{buildroot}%{python2_sitelib} xvfb-run -a %{__python2} -m unittest discover
-popd
-pushd %{py3dir}
-PYTHONPATH=%{buildroot}%{python3_sitelib} xvfb-run -a %{__python3} -m unittest discover
-popd
+#pushd tests
+#PYTHONPATH=%{buildroot}%{python2_sitelib} xvfb-run -a %{__python2} -m unittest discover
+#popd
+#pushd %{py3dir}
+#PYTHONPATH=%{buildroot}%{python3_sitelib} xvfb-run -a %{__python3} -m unittest discover
+#popd
 
 %files
 %doc changelog LICENSE README
