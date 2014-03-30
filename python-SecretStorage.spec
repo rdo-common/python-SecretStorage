@@ -31,6 +31,7 @@ BuildRequires:  python-sphinx
 BuildRequires:  xorg-x11-server-Xvfb
 # Tests only.
 BuildRequires:  gnome-keyring
+BuildRequires:  python-crypto
 Requires:       dbus-python
 
 %description
