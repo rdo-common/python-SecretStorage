@@ -27,9 +27,9 @@ BuildRequires:  python2-devel
 # Building docs needed.
 BuildRequires:  dbus-python
 BuildRequires:  python-sphinx
-# Emulate the X environment.
-BuildRequires:  xorg-x11-server-Xvfb
 # Tests only.
+# Emulate the X environment.
+# BuildRequires:  xorg-x11-server-Xvfb
 # BuildRequires:  gnome-keyring
 # BuildRequires:  python-crypto
 Requires:       dbus-python
@@ -97,7 +97,7 @@ popd
 pushd %{py3dir}
 %{__python3} setup.py install --prefix=%{_prefix} -O1 --skip-build --root=%{buildroot}
 popd
-find %{_builddir} -name '.buildinfo' -delete
+find %{_builddir} -name '.buildinfo' -delete -print
 
 %check
 #pushd tests
@@ -110,15 +110,15 @@ find %{_builddir} -name '.buildinfo' -delete
 %files
 %doc changelog LICENSE README
 %{python2_sitelib}/%{pkgname}-%{version}-py%{python2_version}.egg-info
-%{python2_sitelib}/secretstorage
+%{python2_sitelib}/secretstorage/
 
 %files -n python3-%{pkgname}
 %doc changelog LICENSE README
 %{python3_sitelib}/%{pkgname}-%{version}-py%{python3_version}.egg-info
-%{python3_sitelib}/secretstorage
+%{python3_sitelib}/secretstorage/
 
 %files doc
-%doc changelog LICENSE README
+%doc changelog LICENSE README*
 %doc build/sphinx/html/*
 
 %changelog
