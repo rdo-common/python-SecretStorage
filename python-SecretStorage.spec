@@ -2,7 +2,7 @@
 %global pkgname SecretStorage
 
 Name:           python-%{pkgname}
-Version:        1.1.0
+Version:        2.0.0
 %if 0%{?bzr}
 Release:        0.1.bzr%{?bzr}%{?dist}
 %else
@@ -28,7 +28,9 @@ BuildRequires:  python2-devel
 BuildRequires:  dbus-python
 BuildRequires:  python-sphinx
 # Emulate the X environment.
-# BuildRequires:  xorg-x11-server-Xvfb
+BuildRequires:  xorg-x11-server-Xvfb
+# Tests only.
+BuildRequires:  gnome-keyring
 Requires:       dbus-python
 
 %description
@@ -97,12 +99,12 @@ popd
 find %{_builddir} -name '.buildinfo' -delete
 
 %check
-#pushd tests
-#PYTHONPATH=%{buildroot}%{python2_sitelib} xvfb-run -a nosetests-%{python2_version}
-#popd
-#pushd %{py3dir}
-#PYTHONPATH=%{buildroot}%{python3_sitelib} xvfb-run -a nosetests-%{python3_version}
-#popd
+pushd tests
+PYTHONPATH=%{buildroot}%{python2_sitelib} xvfb-run -a -m unittest discover nosetests-%{python2_version}
+popd
+pushd %{py3dir}
+PYTHONPATH=%{buildroot}%{python3_sitelib} xvfb-run -a -m unittest discover nosetests-%{python3_version}
+popd
 
 %files
 %doc changelog LICENSE README
@@ -119,8 +121,11 @@ find %{_builddir} -name '.buildinfo' -delete
 %doc build/sphinx/html/*
 
 %changelog
+* Sun Mar 30 2014 Christopher Meng <rpm@cicku.me> - 2.0.0-1
+- Update to 2.0.0
+
 * Wed Nov 20 2013 Christopher Meng <rpm@cicku.me> - 1.1.0-1
-- New version.
+- Update to 1.1.0
 
 * Fri Nov 15 2013 Christopher Meng <rpm@cicku.me> - 1.0.0-0.3.bzr83
 - Add license for doc package.
