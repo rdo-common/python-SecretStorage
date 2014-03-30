@@ -100,10 +100,10 @@ find %{_builddir} -name '.buildinfo' -delete
 
 %check
 pushd tests
-PYTHONPATH=%{buildroot}%{python2_sitelib} xvfb-run -a -m unittest discover nosetests-%{python2_version}
+PYTHONPATH=%{buildroot}%{python2_sitelib} xvfb-run -a %{__python2} -m unittest discover
 popd
 pushd %{py3dir}
-PYTHONPATH=%{buildroot}%{python3_sitelib} xvfb-run -a -m unittest discover nosetests-%{python3_version}
+PYTHONPATH=%{buildroot}%{python3_sitelib} xvfb-run -a %{__python3} -m unittest discover
 popd
 
 %files
