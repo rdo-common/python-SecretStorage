@@ -108,17 +108,16 @@ find %{_builddir} -name '.buildinfo' -delete -print
 #popd
 
 %files
-%doc changelog LICENSE README
+%doc changelog LICENSE README*
 %{python2_sitelib}/%{pkgname}-%{version}-py%{python2_version}.egg-info
 %{python2_sitelib}/secretstorage/
 
 %files -n python3-%{pkgname}
-%doc changelog LICENSE README
+%doc changelog LICENSE README*
 %{python3_sitelib}/%{pkgname}-%{version}-py%{python3_version}.egg-info
 %{python3_sitelib}/secretstorage/
 
 %files doc
-%doc changelog LICENSE README*
 %doc build/sphinx/html/*
 
 %changelog
