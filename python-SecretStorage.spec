@@ -4,9 +4,9 @@
 Name:           python-%{pkgname}
 Version:        2.0.0
 %if 0%{?bzr}
-Release:        0.1.bzr%{?bzr}%{?dist}
+Release:        0.2.bzr%{?bzr}%{?dist}
 %else
-Release:        1%{?dist}
+Release:        2%{?dist}
 %endif
 Summary:        Python 2.x module for secure storing of passwords and secrets
 URL:            http://launchpad.net/python-secretstorage
@@ -121,6 +121,9 @@ find %{_builddir} -name '.buildinfo' -delete -print
 %doc build/sphinx/html/*
 
 %changelog
+* Wed May 28 2014 Kalev Lember <kalevlember@gmail.com> - 2.0.0-2
+- Rebuilt for https://fedoraproject.org/wiki/Changes/Python_3.4
+
 * Sun Mar 30 2014 Christopher Meng <rpm@cicku.me> - 2.0.0-1
 - Update to 2.0.0
 
