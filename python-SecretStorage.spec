@@ -2,11 +2,11 @@
 %global pkgname SecretStorage
 
 Name:           python-%{pkgname}
-Version:        2.1.0
+Version:        2.1.1
 %if 0%{?bzr}
 Release:        0.3.bzr%{?bzr}%{?dist}
 %else
-Release:        2%{?dist}
+Release:        1%{?dist}
 %endif
 Summary:        Python 2.x module for secure storing of passwords and secrets
 URL:            http://launchpad.net/python-secretstorage
@@ -121,6 +121,9 @@ find %{_builddir} -name '.buildinfo' -delete -print
 %doc build/sphinx/html/*
 
 %changelog
+* Thu Jul 17 2014 Christopher Meng <rpm@cicku.me> - 2.1.1-1
+- Update to 2.1.1
+
 * Sat Jun 07 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.1.0-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
 
