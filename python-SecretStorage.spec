@@ -1,6 +1,12 @@
 #global bzr     83
 %global pkgname SecretStorage
 
+%if 0%{?fedora} >= 13 || 0%{?el} >= 8
+%global with_python3 1
+%else
+%global with_python3 0
+%endif
+
 Name:           python-%{pkgname}
 Version:        2.1.1
 %if 0%{?bzr}
@@ -48,6 +54,7 @@ SecretStorage supports most of the functions provided by Secret Service,
 including creating and deleting items and collections, editing items, locking 
 and unlocking collections (asynchronous unlocking is also supported).
 
+%if 0%{?with_python3}
 %package -n     python3-%{pkgname}
 Summary:        Python 3.x module for secure storing of passwords and secrets
 BuildRequires:  python3-devel
@@ -69,6 +76,7 @@ a place items are stored in.
 SecretStorage supports most of the functions provided by Secret Service, 
 including creating and deleting items and collections, editing items, locking 
 and unlocking collections (asynchronous unlocking is also supported).
+%endif
 
 %package        doc
 Summary:        Documentation for %{name}
@@ -82,40 +90,50 @@ Documentation for %{name}.
 %else
 %setup -qn %{pkgname}-%{version}
 %endif
+%if 0%{?with_python3}
 rm -rf %{py3dir}
 cp -a . %{py3dir}
+%endif
 
 %build
 %{__python2} setup.py build
+%if 0%{?with_python3}
 pushd %{py3dir}
 %{__python3} setup.py build
 popd
+%endif
 %{__python2} setup.py build_sphinx
 
 %install
 %{__python2} setup.py install --prefix=%{_prefix} -O1 --skip-build --root=%{buildroot}
+%if 0%{?with_python3}
 pushd %{py3dir}
 %{__python3} setup.py install --prefix=%{_prefix} -O1 --skip-build --root=%{buildroot}
 popd
+%endif
 find %{_builddir} -name '.buildinfo' -delete -print
 
 %check
 #pushd tests
 #PYTHONPATH=%{buildroot}%{python2_sitelib} xvfb-run -a %{__python2} -m unittest discover
 #popd
+#%if 0%{?with_python3}
 #pushd %{py3dir}
 #PYTHONPATH=%{buildroot}%{python3_sitelib} xvfb-run -a %{__python3} -m unittest discover
 #popd
+#%endif
 
 %files
 %doc changelog LICENSE README*
 %{python2_sitelib}/%{pkgname}-%{version}-py%{python2_version}.egg-info
 %{python2_sitelib}/secretstorage/
 
+%if 0%{?with_python3}
 %files -n python3-%{pkgname}
 %doc changelog LICENSE README*
 %{python3_sitelib}/%{pkgname}-%{version}-py%{python3_version}.egg-info
 %{python3_sitelib}/secretstorage/
+%endif
 
 %files doc
 %doc build/sphinx/html/*
