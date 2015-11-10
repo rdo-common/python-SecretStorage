@@ -10,7 +10,7 @@
 Name:           python-%{pkgname}
 Version:        2.1.1
 %if 0%{?bzr}
-Release:        0.4.bzr%{?bzr}%{?dist}
+Release:        0.5.bzr%{?bzr}%{?dist}
 %else
 Release:        2%{?dist}
 %endif
@@ -139,6 +139,9 @@ find %{_builddir} -name '.buildinfo' -delete -print
 %doc build/sphinx/html/*
 
 %changelog
+* Tue Nov 10 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.1.1-2
+- Rebuilt for https://fedoraproject.org/wiki/Changes/python3.5
+
 * Thu Jun 18 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.1.1-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_23_Mass_Rebuild
 
