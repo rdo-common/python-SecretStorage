@@ -1,5 +1,5 @@
-#global bzr     83
-%global pkgname SecretStorage
+#global bzr		83
+%global srcname SecretStorage
 
 %if 0%{?fedora} >= 13 || 0%{?el} >= 8
 %global with_python3 1
@@ -7,38 +7,51 @@
 %global with_python3 0
 %endif
 
-Name:           python-%{pkgname}
-Version:        2.1.1
+Name:			python-%{srcname}
+Version:		2.1.4
 %if 0%{?bzr}
-Release:        0.6.bzr%{?bzr}%{?dist}
+Release:		0.6.bzr%{?bzr}%{?dist}
 %else
-Release:        3%{?dist}
+Release:		1%{?dist}
 %endif
-Summary:        Python 2.x module for secure storing of passwords and secrets
-URL:            http://launchpad.net/python-secretstorage
+Summary:		Python bindings to FreeDesktop.org Secret Service API
+URL:			http://launchpad.net/python-secretstorage
 %if 0%{?bzr}
 # Bazaar revision 83 snapshot downloaded at 2013-11-15 from launchpad via:
 # bzr branch -r 83 lp:python-secretstorage python-secretstorage-bzr
 # pushd python-secretstorage-bzr
 # bzr export ../python-secretstorage-bzr83.tgz
 # popd
-Source0:        python-secretstorage-bzr%{bzr}.tgz
+Source0:		python-secretstorage-bzr%{bzr}.tgz
 %else
-Source0:        https://pypi.python.org/packages/source/S/%{pkgname}/%{pkgname}-%{version}.tar.gz
+Source0:		https://pypi.python.org/packages/source/S/%{srcname}/%{srcname}-%{version}.tar.gz
 %endif
-License:        BSD
-BuildArch:      noarch
-BuildRequires:  python-nose
-BuildRequires:  python2-devel
-# Building docs needed.
-BuildRequires:  dbus-python
-BuildRequires:  python-sphinx
+License:		BSD
+BuildArch:		noarch
+
+BuildRequires:	python-nose
+BuildRequires:	python2-devel
+
+# Needed for building docs.
+BuildRequires:	python-sphinx
+
 # Tests only.
-# Emulate the X environment.
-# BuildRequires:  xorg-x11-server-Xvfb
-# BuildRequires:  gnome-keyring
-# BuildRequires:  python-crypto
-Requires:       dbus-python
+BuildRequires:	gnome-keyring
+BuildRequires:	python-crypto
+BuildRequires:	dbus-python
+
+# Emulate the X environment for the tests.
+BuildRequires:	xorg-x11-server-Xvfb
+BuildRequires:	dbus-x11
+
+%if 0%{?with_python3}
+BuildRequires:	python3-devel
+BuildRequires:	python3-nose
+
+# For python 3 tests.
+BuildRequires:	python3-dbus
+BuildRequires:	python3-crypto
+%endif
 
 %description
 This module provides a way for securely storing passwords and other secrets.
@@ -54,16 +67,40 @@ SecretStorage supports most of the functions provided by Secret Service,
 including creating and deleting items and collections, editing items, locking 
 and unlocking collections (asynchronous unlocking is also supported).
 
-%if 0%{?with_python3}
-%package -n     python3-%{pkgname}
-Summary:        Python 3.x module for secure storing of passwords and secrets
-BuildRequires:  python3-devel
-BuildRequires:  python3-nose
-# Tests only.
-BuildRequires:  python3-dbus
-Requires:       python3-dbus
+%package -n python2-%{srcname}
+Summary:		Python 2.x module for secure storing of passwords and secrets
 
-%description -n python3-%{pkgname}
+Requires:		dbus-python
+Requires:		python-crypto
+Recommends:		python-gobject
+
+%{?python_provide:%python_provide python2-%{srcname}}
+
+%description -n python2-%{srcname}
+This module provides a way for securely storing passwords and other secrets.
+
+It uses D-Bus Secret Service API that is supported by GNOME Keyring (>= 2.30) 
+and KSecretsService.
+
+The main classes provided are secretstorage.Item, representing a secret item 
+(that has a label, a secret and some attributes) and secretstorage.Collection,
+a place items are stored in.
+
+SecretStorage supports most of the functions provided by Secret Service, 
+including creating and deleting items and collections, editing items, locking 
+and unlocking collections (asynchronous unlocking is also supported).
+
+%if 0%{?with_python3}
+%package -n     python3-%{srcname}
+Summary:		Python 3.x module for secure storing of passwords and secrets
+
+Requires:		python3-dbus
+Requires:		python3-crypto
+Recommends:		python3-gobject
+
+%{?python_provide:%python_provide python3-%{srcname}}
+
+%description -n python3-%{srcname}
 This module provides a way for securely storing passwords and other secrets.
 
 It uses D-Bus Secret Service API that is supported by GNOME Keyring (>= 2.30) 
@@ -78,67 +115,88 @@ including creating and deleting items and collections, editing items, locking
 and unlocking collections (asynchronous unlocking is also supported).
 %endif
 
-%package        doc
-Summary:        Documentation for %{name}
+%package -n python-%{srcname}-doc
+Summary:	SecretStorage documentation
 
-%description    doc
-Documentation for %{name}.
+%description -n python-%{srcname}-doc
+Documentation for SecretStorage
 
 %prep
 %if 0%{?bzr}
 %setup -qn python-secretstorage-bzr%{bzr}
 %else
-%setup -qn %{pkgname}-%{version}
+%setup -qn %{srcname}-%{version}
 %endif
 %if 0%{?with_python3}
 rm -rf %{py3dir}
 cp -a . %{py3dir}
 %endif
 
+# Remove bundled egg info
+rm -rf %{srcname}.egg-info
+# Remove .gitignore file
+rm .gitignore
+
 %build
-%{__python2} setup.py build
+%py2_build
 %if 0%{?with_python3}
 pushd %{py3dir}
-%{__python3} setup.py build
+%py3_build
 popd
 %endif
+
+# Build the documentation
 %{__python2} setup.py build_sphinx
 
 %install
-%{__python2} setup.py install --prefix=%{_prefix} -O1 --skip-build --root=%{buildroot}
+%py2_install
 %if 0%{?with_python3}
 pushd %{py3dir}
-%{__python3} setup.py install --prefix=%{_prefix} -O1 --skip-build --root=%{buildroot}
+%py3_install
 popd
 %endif
+
+# Remove unnecessary files generated by python-sphinx
 find %{_builddir} -name '.buildinfo' -delete -print
+find %{_builddir} -name 'doctrees' -type d -print -exec rm -r '{}' +
 
 %check
-#pushd tests
-#PYTHONPATH=%{buildroot}%{python2_sitelib} xvfb-run -a %{__python2} -m unittest discover
-#popd
-#%if 0%{?with_python3}
-#pushd %{py3dir}
-#PYTHONPATH=%{buildroot}%{python3_sitelib} xvfb-run -a %{__python3} -m unittest discover
-#popd
-#%endif
-
-%files
-%doc changelog LICENSE README*
-%{python2_sitelib}/%{pkgname}-%{version}-py%{python2_version}.egg-info
-%{python2_sitelib}/secretstorage/
-
+pushd tests
+PYTHONPATH=%{buildroot}%{python2_sitelib} xvfb-run -a %{__python2} -m unittest discover
+popd
 %if 0%{?with_python3}
-%files -n python3-%{pkgname}
-%doc changelog LICENSE README*
-%{python3_sitelib}/%{pkgname}-%{version}-py%{python3_version}.egg-info
-%{python3_sitelib}/secretstorage/
+pushd %{py3dir}
+PYTHONPATH=%{buildroot}%{python3_sitelib} xvfb-run -a %{__python3} -m unittest discover
+popd
 %endif
 
-%files doc
+%files -n python2-%{srcname}
+%doc docs changelog README.rst
+%license LICENSE
+%{python2_sitelib}/%{srcname}-%{version}-py?.?.egg-info
+%{python2_sitelib}/secretstorage
+
+%if 0%{?with_python3}
+%files -n python3-%{srcname}
+%doc docs changelog README.rst
+%license LICENSE
+%{python3_sitelib}/%{srcname}-%{version}-py?.?.egg-info
+%{python3_sitelib}/secretstorage
+%endif
+
+%files -n python-%{srcname}-doc
 %doc build/sphinx/html/*
 
 %changelog
+* Mon May 16 2016 Charalampos Stratakis <cstratak@redhat.com> - 2.1.4-1
+- Update to 2.1.4
+- Provide a python 2 subpackage
+- Use python provides macros
+- Use newest python macros
+- Added license tag
+- Enabled tests
+- Added missing dependencies
+
 * Thu Feb 04 2016 Fedora Release Engineering <releng@fedoraproject.org> - 2.1.1-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_24_Mass_Rebuild
 
