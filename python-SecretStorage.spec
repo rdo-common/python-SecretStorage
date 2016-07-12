@@ -8,7 +8,7 @@
 %endif
 
 Name:			python-%{srcname}
-Version:		2.1.4
+Version:		2.2.1
 %if 0%{?bzr}
 Release:		0.6.bzr%{?bzr}%{?dist}
 %else
@@ -24,7 +24,7 @@ URL:			http://launchpad.net/python-secretstorage
 # popd
 Source0:		python-secretstorage-bzr%{bzr}.tgz
 %else
-Source0:		https://pypi.python.org/packages/source/S/%{srcname}/%{srcname}-%{version}.tar.gz
+Source0:		https://files.pythonhosted.org/packages/source/S/%{srcname}/%{srcname}-%{version}.tar.gz
 %endif
 License:		BSD
 BuildArch:		noarch
@@ -188,6 +188,9 @@ popd
 %doc build/sphinx/html/*
 
 %changelog
+* Tue Jul 12 2016 Charalampos Stratakis <cstratak@redhat.com> - 2.2.1-1
+- Update to 2.2.1
+
 * Mon May 16 2016 Charalampos Stratakis <cstratak@redhat.com> - 2.1.4-1
 - Update to 2.1.4
 - Provide a python 2 subpackage
