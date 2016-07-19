@@ -10,9 +10,9 @@
 Name:			python-%{srcname}
 Version:		2.2.1
 %if 0%{?bzr}
-Release:		0.6.bzr%{?bzr}%{?dist}
+Release:		0.7.bzr%{?bzr}%{?dist}
 %else
-Release:		1%{?dist}
+Release:		2%{?dist}
 %endif
 Summary:		Python bindings to FreeDesktop.org Secret Service API
 URL:			http://launchpad.net/python-secretstorage
@@ -188,6 +188,9 @@ popd
 %doc build/sphinx/html/*
 
 %changelog
+* Tue Jul 19 2016 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.2.1-2
+- https://fedoraproject.org/wiki/Changes/Automatic_Provides_for_Python_RPM_Packages
+
 * Tue Jul 12 2016 Charalampos Stratakis <cstratak@redhat.com> - 2.2.1-1
 - Update to 2.2.1
 
