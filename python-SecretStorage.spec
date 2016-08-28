@@ -8,11 +8,11 @@
 %endif
 
 Name:			python-%{srcname}
-Version:		2.2.1
+Version:		2.3.1
 %if 0%{?bzr}
 Release:		0.7.bzr%{?bzr}%{?dist}
 %else
-Release:		2%{?dist}
+Release:		1%{?dist}
 %endif
 Summary:		Python bindings to FreeDesktop.org Secret Service API
 URL:			http://launchpad.net/python-secretstorage
@@ -37,7 +37,7 @@ BuildRequires:	python-sphinx
 
 # Tests only.
 BuildRequires:	gnome-keyring
-BuildRequires:	python-crypto
+BuildRequires:	python2-cryptography
 BuildRequires:	dbus-python
 
 # Emulate the X environment for the tests.
@@ -50,7 +50,7 @@ BuildRequires:	python3-nose
 
 # For python 3 tests.
 BuildRequires:	python3-dbus
-BuildRequires:	python3-crypto
+BuildRequires:	python3-cryptography
 %endif
 
 %description
@@ -188,6 +188,10 @@ popd
 %doc build/sphinx/html/*
 
 %changelog
+* Sun Aug 28 2016 Charalampos Stratakis <cstratak@redhat.com> - 2.3.1-1
+- Update to 2.3.1
+- Replace python-crypto BuildRequires with python-cryptography
+
 * Tue Jul 19 2016 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.2.1-2
 - https://fedoraproject.org/wiki/Changes/Automatic_Provides_for_Python_RPM_Packages
 
