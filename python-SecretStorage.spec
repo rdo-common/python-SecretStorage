@@ -12,7 +12,7 @@ Version:		2.3.1
 %if 0%{?bzr}
 Release:		0.7.bzr%{?bzr}%{?dist}
 %else
-Release:		1%{?dist}
+Release:		2%{?dist}
 %endif
 Summary:		Python bindings to FreeDesktop.org Secret Service API
 URL:			http://launchpad.net/python-secretstorage
@@ -71,7 +71,7 @@ and unlocking collections (asynchronous unlocking is also supported).
 Summary:		Python 2.x module for secure storing of passwords and secrets
 
 Requires:		dbus-python
-Requires:		python-crypto
+Requires:		python2-cryptography
 Recommends:		python-gobject
 
 %{?python_provide:%python_provide python2-%{srcname}}
@@ -95,7 +95,7 @@ and unlocking collections (asynchronous unlocking is also supported).
 Summary:		Python 3.x module for secure storing of passwords and secrets
 
 Requires:		python3-dbus
-Requires:		python3-crypto
+Requires:		python3-cryptography
 Recommends:		python3-gobject
 
 %{?python_provide:%python_provide python3-%{srcname}}
@@ -188,6 +188,9 @@ popd
 %doc build/sphinx/html/*
 
 %changelog
+* Fri Nov 25 2016 Charalampos Stratakis <cstratak@redhat.com> - 2.3.1-2
+- Use python-cryptography instead of python-crypto as runtime requirement
+
 * Sun Aug 28 2016 Charalampos Stratakis <cstratak@redhat.com> - 2.3.1-1
 - Update to 2.3.1
 - Replace python-crypto BuildRequires with python-cryptography
