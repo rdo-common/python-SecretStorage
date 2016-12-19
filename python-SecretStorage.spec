@@ -10,9 +10,9 @@
 Name:			python-%{srcname}
 Version:		2.3.1
 %if 0%{?bzr}
-Release:		0.7.bzr%{?bzr}%{?dist}
+Release:		0.8.bzr%{?bzr}%{?dist}
 %else
-Release:		2%{?dist}
+Release:		3%{?dist}
 %endif
 Summary:		Python bindings to FreeDesktop.org Secret Service API
 URL:			http://launchpad.net/python-secretstorage
@@ -188,6 +188,9 @@ popd
 %doc build/sphinx/html/*
 
 %changelog
+* Mon Dec 19 2016 Miro Hrončok <mhroncok@redhat.com> - 2.3.1-3
+- Rebuild for Python 3.6
+
 * Fri Nov 25 2016 Charalampos Stratakis <cstratak@redhat.com> - 2.3.1-2
 - Use python-cryptography instead of python-crypto as runtime requirement
 
