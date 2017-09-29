@@ -1,7 +1,7 @@
 #global bzr		83
 %global srcname SecretStorage
 
-%if 0%{?fedora} >= 13 || 0%{?el} >= 8
+%if 0%{?fedora} || 0%{?rhel} > 7
 %global with_python3 1
 %else
 %global with_python3 0
@@ -12,7 +12,7 @@ Version:		2.3.1
 %if 0%{?bzr}
 Release:		0.10.bzr%{?bzr}%{?dist}
 %else
-Release:		5%{?dist}
+Release:		6%{?dist}
 %endif
 Summary:		Python bindings to FreeDesktop.org Secret Service API
 URL:			http://launchpad.net/python-secretstorage
@@ -188,6 +188,9 @@ popd
 %doc build/sphinx/html/*
 
 %changelog
+* Fri Sep 29 2017 Troy Dawson <tdawson@redhat.com> - 2.3.1-6
+- Cleanup spec file conditionals
+
 * Thu Jul 27 2017 Fedora Release Engineering <releng@fedoraproject.org> - 2.3.1-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Mass_Rebuild
 
