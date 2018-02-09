@@ -10,9 +10,9 @@
 Name:			python-%{srcname}
 Version:		2.3.1
 %if 0%{?bzr}
-Release:		0.10.bzr%{?bzr}%{?dist}
+Release:		0.11.bzr%{?bzr}%{?dist}
 %else
-Release:		6%{?dist}
+Release:		7%{?dist}
 %endif
 Summary:		Python bindings to FreeDesktop.org Secret Service API
 URL:			http://launchpad.net/python-secretstorage
@@ -188,6 +188,9 @@ popd
 %doc build/sphinx/html/*
 
 %changelog
+* Fri Feb 09 2018 Fedora Release Engineering <releng@fedoraproject.org> - 2.3.1-7
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_28_Mass_Rebuild
+
 * Fri Sep 29 2017 Troy Dawson <tdawson@redhat.com> - 2.3.1-6
 - Cleanup spec file conditionals
 
