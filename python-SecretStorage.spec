@@ -117,11 +117,13 @@ including creating and deleting items and collections, editing items, locking
 and unlocking collections (asynchronous unlocking is also supported).
 %endif
 
+%if 0%{?without_doc}
 %package -n python-%{srcname}-doc
 Summary:	SecretStorage documentation
 
 %description -n python-%{srcname}-doc
 Documentation for SecretStorage
+%endif
 
 %prep
 %if 0%{?bzr}
@@ -147,8 +149,10 @@ pushd %{py3dir}
 popd
 %endif
 
+%if 0%{?without_doc}
 # Build the documentation
 %{__python2} setup.py build_sphinx
+%endif
 
 %install
 %py2_install
@@ -186,8 +190,10 @@ popd
 %{python3_sitelib}/secretstorage
 %endif
 
+%if 0%{?without_doc}
 %files -n python-%{srcname}-doc
 %doc build/sphinx/html/*
+%endif
 
 %changelog
 * Fri Feb 09 2018 Fedora Release Engineering <releng@fedoraproject.org> - 2.3.1-7
