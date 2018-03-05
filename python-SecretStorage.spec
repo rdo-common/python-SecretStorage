@@ -72,7 +72,9 @@ Summary:		Python 2.x module for secure storing of passwords and secrets
 
 Requires:		dbus-python
 Requires:		python2-cryptography
+%if 0%{?fedora} || 0%{?rhel} > 7
 Recommends:		python-gobject
+%endif
 
 %{?python_provide:%python_provide python2-%{srcname}}
 
