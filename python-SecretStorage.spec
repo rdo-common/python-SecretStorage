@@ -1,4 +1,3 @@
-%__openstack_set_env
 %global with_doc 0
 #global bzr		83
 %global srcname SecretStorage
@@ -31,9 +30,6 @@ Source0:		https://files.pythonhosted.org/packages/source/S/%{srcname}/%{srcname}
 License:		BSD
 BuildArch:		noarch
 
-BuildRequires:	python2-nose
-BuildRequires:	python2-devel
-
 %if 0%{?with_doc}
 # Needed for building docs.
 BuildRequires:	python-sphinx
@@ -41,8 +37,6 @@ BuildRequires:	python-sphinx
 
 # Tests only.
 BuildRequires:	gnome-keyring
-#BuildRequires:	python2-cryptography
-#BuildRequires:	dbus-python
 
 # Emulate the X environment for the tests.
 BuildRequires:	xorg-x11-server-Xvfb
@@ -58,29 +52,6 @@ BuildRequires:	python3-cryptography
 %endif
 
 %description
-This module provides a way for securely storing passwords and other secrets.
-
-It uses D-Bus Secret Service API that is supported by GNOME Keyring (>= 2.30) 
-and KSecretsService.
-
-The main classes provided are secretstorage.Item, representing a secret item 
-(that has a label, a secret and some attributes) and secretstorage.Collection,
-a place items are stored in.
-
-SecretStorage supports most of the functions provided by Secret Service, 
-including creating and deleting items and collections, editing items, locking 
-and unlocking collections (asynchronous unlocking is also supported).
-
-%package -n python2-%{srcname}
-Summary:		Python 2.x module for secure storing of passwords and secrets
-
-Requires:		dbus-python
-Requires:		python2-cryptography
-#Recommends:		python-gobject
-
-%{?python_provide:%python_provide python2-%{srcname}}
-
-%description -n python2-%{srcname}
 This module provides a way for securely storing passwords and other secrets.
 
 It uses D-Bus Secret Service API that is supported by GNOME Keyring (>= 2.30) 
@@ -119,12 +90,6 @@ including creating and deleting items and collections, editing items, locking
 and unlocking collections (asynchronous unlocking is also supported).
 %endif
 
-%package -n python-%{srcname}-doc
-Summary:	SecretStorage documentation
-
-%description -n python-%{srcname}-doc
-Documentation for SecretStorage
-
 %prep
 %if 0%{?bzr}
 %setup -qn python-secretstorage-bzr%{bzr}
@@ -142,7 +107,6 @@ rm -rf %{srcname}.egg-info
 rm .gitignore
 
 %build
-%py2_build
 %if 0%{?with_python3}
 pushd %{py3dir}
 %py3_build
@@ -155,7 +119,6 @@ popd
 %endif
 
 %install
-%py2_install
 %if 0%{?with_python3}
 pushd %{py3dir}
 %py3_install
@@ -169,20 +132,11 @@ find %{_builddir} -name 'doctrees' -type d -print -exec rm -r '{}' +
 %endif
 
 %check
-#pushd tests
-#PYTHONPATH=%{buildroot}%{python2_sitelib} xvfb-run -a %{__python2} -m unittest discover
-#popd
 %if 0%{?with_python3}
 pushd %{py3dir}
 PYTHONPATH=%{buildroot}%{python3_sitelib} xvfb-run -a %{__python3} -m unittest discover
 popd
 %endif
-
-%files -n python2-%{srcname}
-%doc docs changelog README.rst
-%license LICENSE
-%{python2_sitelib}/%{srcname}-%{version}-py?.?.egg-info
-%{python2_sitelib}/secretstorage
 
 %if 0%{?with_python3}
 %files -n python3-%{srcname}
